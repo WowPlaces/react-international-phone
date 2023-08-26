@@ -121,10 +121,19 @@ export interface UsePhoneInputConfig {
    * @default undefined
    */
   onChange?: (data: { phone: string; country: CountryIso2 }) => void;
+
+  /**
+   * @description Callback that calls on country guess change
+   * @params new phone input state
+   * - *data.phone* - new phone value
+   * - *data.country* - new country value
+   * @default undefined
+   */
+  onCountryGuess?: (data: { country: ParsedCountry | undefined }) => void;
 }
 
 export const defaultConfig: Required<
-  Omit<UsePhoneInputConfig, 'onChange'> // omit props with no default value
+  Omit<UsePhoneInputConfig, 'onChange' | 'onCountryGuess'> // omit props with no default value
 > = {
   defaultCountry: 'us',
   value: '',
@@ -152,6 +161,7 @@ export const usePhoneInput = ({
   forceDialCode = defaultConfig.forceDialCode,
   disableDialCodeAndPrefix = defaultConfig.disableDialCodeAndPrefix,
   onChange,
+  onCountryGuess,
 }: UsePhoneInputConfig) => {
   const countryGuessingEnabled = disableDialCodeAndPrefix
     ? false
@@ -180,6 +190,10 @@ export const usePhoneInput = ({
           currentCountryIso2: country.iso2,
         }) // FIXME: should not guess country on every change
       : undefined;
+
+    if (countryGuessResult?.fullDialCodeMatch && countryGuessResult?.country?.iso2 !== country.iso2) {
+      onCountryGuess?.({ country: countryGuessResult?.country });
+    }
 
     const formatCountry = countryGuessResult?.country ?? country;
 

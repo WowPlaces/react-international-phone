@@ -5,7 +5,7 @@ import React, { useMemo } from 'react';
 import { defaultCountries } from '../../data/countryData';
 import { usePhoneInput, UsePhoneInputConfig } from '../../hooks/usePhoneInput';
 import { buildClassNames } from '../../style/buildClassNames';
-import { CountryIso2 } from '../../types';
+import { CountryIso2, ParsedCountry } from '../../types';
 import { getCountry } from '../../utils';
 import {
   CountrySelector,
@@ -75,6 +75,15 @@ export interface PhoneInputProps
    * @default undefined
    */
   onChange?: (phone: string, country: CountryIso2) => void;
+
+    /**
+   * @description Callback that calls on country guess change
+   * @params new phone input state
+   * - *data.phone* - new phone value
+   * - *data.country* - new country value
+   * @default undefined
+   */
+    onCountryGuess?: (data: { country: ParsedCountry | undefined }) => void;
 }
 
 export const PhoneInput: React.FC<PhoneInputProps> = ({
@@ -85,6 +94,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
   inputProps,
   flags,
   onChange,
+  onCountryGuess,
 
   style,
   className,
@@ -105,6 +115,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
       onChange: (data) => {
         onChange?.(data.phone, data.country);
       },
+      onCountryGuess,
     });
 
   const fullCountry = useMemo(() => {

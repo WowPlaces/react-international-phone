@@ -1,6 +1,6 @@
 {
-  "name": "react-international-phone",
-  "version": "3.1.2",
+  "name": "wowplaces-react-international-phone",
+  "version": "0.0.2",
   "description": "☎️ International phone input component for React",
   "keywords": [
     "react",
@@ -39,7 +39,7 @@
   ],
   "scripts": {
     "cm": "cz",
-    "build": "tsup && tsc --emitDeclarationOnly",
+    "build": "rm -rf build && tsup && tsc --emitDeclarationOnly",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "storybook": "sb dev -p 6006",
